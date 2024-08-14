@@ -52,28 +52,28 @@ ERNIE|94.61%|比bert略差(说好的中文碾压bert呢)
 bert和ERNIE模型代码我放到另外一个仓库了，传送门：[Bert-Chinese-Text-Classification-Pytorch](https://github.com/649453932/Bert-Chinese-Text-Classification-Pytorch)，后续还会搞一些bert之后的东西，欢迎star。  
 
 ## 使用说明
-```
+```E
 # 训练并测试：
-# TextCNN
-python run.py --model TextCNN
+# TextCNN 89个品目平均82%准确率
+python run.py --model TextCNN --embedding random
 
-# TextRNN
+# TextRNN 89个品目平均83%准确率
 python run.py --model TextRNN
 
-# TextRNN_Att
-python run.py --model TextRNN_Att
+# TextRNN_Att 89个品目平均84%准确率
+python run.py --model TextRNN_Att --embedding random
 
-# TextRCNN
-python run.py --model TextRCNN
+# TextRCNN 89个品目平均82%准确率
+python run.py --model TextRCNN --embedding random
 
-# FastText, embedding层是随机初始化的
-python run.py --model FastText --embedding random 
+# FastText 89个品目86准确率
+python run.py --model FastText --embedding random
 
 # DPCNN
-python run.py --model DPCNN
+python run.py --model DPCNN --embedding random
 
 # Transformer
-python run.py --model Transformer
+python run.py --model Transformer --embedding random
 ```
 
 ### 参数

@@ -14,7 +14,7 @@ args = parser.parse_args()
 
 
 if __name__ == '__main__':
-    dataset = 'THUCNews'  # 数据集
+    dataset = 'goods'  # 数据集
 
     # 搜狗新闻:embedding_SougouNews.npz, 腾讯:embedding_Tencent.npz, 随机初始化:random
     embedding = 'embedding_SougouNews.npz'
@@ -33,15 +33,15 @@ if __name__ == '__main__':
     torch.manual_seed(1)
     torch.cuda.manual_seed_all(1)
     torch.backends.cudnn.deterministic = True  # 保证每次结果一样
-
+    print('cuda加速:%s' % torch.cuda.is_available())
     start_time = time.time()
-    print("Loading data...")
+    print("读取数据...")
     vocab, train_data, dev_data, test_data = build_dataset(config, args.word)
     train_iter = build_iterator(train_data, config)
     dev_iter = build_iterator(dev_data, config)
     test_iter = build_iterator(test_data, config)
     time_dif = get_time_dif(start_time)
-    print("Time usage:", time_dif)
+    print("读取数据耗时:", time_dif)
 
     # train
     config.n_vocab = len(vocab)

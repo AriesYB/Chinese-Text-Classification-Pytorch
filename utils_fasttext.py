@@ -7,7 +7,6 @@ from tqdm import tqdm
 import time
 from datetime import timedelta
 
-
 MAX_VOCAB_SIZE = 10000
 UNK, PAD = '<UNK>', '<PAD>'
 
@@ -56,7 +55,13 @@ def build_dataset(config, ues_word):
                 lin = line.strip()
                 if not lin:
                     continue
-                content, label = lin.split('\t')
+                try:
+                    content, label = lin.split('\t')
+                except ValueError as e:
+                    print(path)
+                    print("skip error line:", line)
+
+                    continue
                 words_line = []
                 token = tokenizer(content)
                 seq_len = len(token)
@@ -93,7 +98,7 @@ class DatasetIterater(object):
         self.batches = batches
         self.n_batches = len(batches) // batch_size
         self.residue = False  # 记录batch数量是否为整数 
-        if len(batches) % self.n_batches != 0:
+        if len(batches) % self.batch_size != 0:
             self.residue = True
         self.index = 0
         self.device = device

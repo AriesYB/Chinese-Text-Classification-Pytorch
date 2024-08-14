@@ -21,6 +21,9 @@ def build_vocab(file_path, tokenizer, max_size, min_freq):
                 continue
             content = lin.split('\t')[0]
             for word in tokenizer(content):
+                #FIXME 暂时去掉空格
+                if word == ' ':
+                    continue
                 vocab_dic[word] = vocab_dic.get(word, 0) + 1
         vocab_list = sorted([_ for _ in vocab_dic.items() if _[1] >= min_freq], key=lambda x: x[1], reverse=True)[:max_size]
         vocab_dic = {word_count[0]: idx for idx, word_count in enumerate(vocab_list)}
@@ -38,7 +41,7 @@ def build_dataset(config, ues_word):
     else:
         vocab = build_vocab(config.train_path, tokenizer=tokenizer, max_size=MAX_VOCAB_SIZE, min_freq=1)
         pkl.dump(vocab, open(config.vocab_path, 'wb'))
-    print(f"Vocab size: {len(vocab)}")
+    print(f"词汇大小: {len(vocab)}")
 
     def load_dataset(path, pad_size=32):
         contents = []
@@ -47,7 +50,13 @@ def build_dataset(config, ues_word):
                 lin = line.strip()
                 if not lin:
                     continue
-                content, label = lin.split('\t')
+                try:
+                    content, label = lin.split('\t')
+                except ValueError as e:
+                    print(path)
+                    print("skip error line:", line)
+                    
+                    continue
                 words_line = []
                 token = tokenizer(content)
                 seq_len = len(token)
@@ -74,7 +83,7 @@ class DatasetIterater(object):
         self.batches = batches
         self.n_batches = len(batches) // batch_size
         self.residue = False  # 记录batch数量是否为整数
-        if len(batches) % self.n_batches != 0:
+        if len(batches) % self.batch_size != 0:
             self.residue = True
         self.index = 0
         self.device = device
@@ -128,11 +137,11 @@ def get_time_dif(start_time):
 if __name__ == "__main__":
     '''提取预训练词向量'''
     # 下面的目录、文件名按需更改。
-    train_dir = "./THUCNews/data/train.txt"
-    vocab_dir = "./THUCNews/data/vocab.pkl"
-    pretrain_dir = "./THUCNews/data/sgns.sogou.char"
+    train_dir = "./goods/data/train.txt"
+    vocab_dir = "./goods/data/vocab.pkl"
+    pretrain_dir = "./goods/data/sgns.sogou.char"
     emb_dim = 300
-    filename_trimmed_dir = "./THUCNews/data/embedding_SougouNews"
+    filename_trimmed_dir = "./goods/data/embedding_SougouNews"
     if os.path.exists(vocab_dir):
         word_to_id = pkl.load(open(vocab_dir, 'rb'))
     else:
