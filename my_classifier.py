@@ -200,6 +200,8 @@ class MyClassifier:
 
 if __name__ == '__main__':
     model_name = 'TextRNN_Att'  # TextCNN, TextRNN, FastText, TextRCNN, TextRNN_Att, DPCNN, Transformer
+    # 搜狗新闻:embedding_SougouNews.npz, 腾讯:embedding_Tencent.npz, 随机初始化:random
+    # embedding = 'embedding_SougouNews.npz'
     embedding = 'random'
     word = False
     dataset = 'goods'  # 数据集目录
