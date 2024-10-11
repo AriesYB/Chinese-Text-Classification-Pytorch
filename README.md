@@ -55,3 +55,5 @@ python run.py --model Transformer --embedding random
 
 ## 模型使用
 `python my_classifier.py`
+
+[更轻量的server项目](https://github.com/AriesYB/keyword_classifier.git)
