@@ -55,13 +55,7 @@ def build_dataset(config, ues_word):
                 lin = line.strip()
                 if not lin:
                     continue
-                try:
-                    content, label = lin.split('\t')
-                except ValueError as e:
-                    print(path)
-                    print("skip error line:", line)
-
-                    continue
+                content, label = lin.split('\t')
                 words_line = []
                 token = tokenizer(content)
                 seq_len = len(token)

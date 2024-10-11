@@ -1,4 +1,5 @@
 # coding: UTF-8
+import os
 import time
 import torch
 import numpy as np
@@ -11,7 +12,6 @@ parser.add_argument('--model', type=str, required=True, help='choose a model: Te
 parser.add_argument('--embedding', default='pre_trained', type=str, help='random or pre_trained')
 parser.add_argument('--word', default=False, type=bool, help='True for word, False for char')
 args = parser.parse_args()
-
 
 if __name__ == '__main__':
     dataset = 'goods'  # 数据集
@@ -49,4 +49,13 @@ if __name__ == '__main__':
     if model_name != 'Transformer':
         init_network(model)
     print(model.parameters)
+
+    # 继续训练
+    print("加载ckpt继续训练...")
+    if os.path.exists(config.save_path):
+        model.load_state_dict(torch.load(config.save_path))
+    else:
+        print(f"警告: 指定的保存路径 {config.save_path} 不存在.")
+    # 可以选择在这里添加更多处理逻辑，例如抛出异常或者初始化模型参数
+
     train(config, model, train_iter, dev_iter, test_iter)
